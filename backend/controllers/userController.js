@@ -5,11 +5,13 @@ import generateToken from "../utils/generateToken.js";
 //@description     Auth the user
 //@route           POST /api/users/login
 //@access          Public
+
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-
+  //find user in db by email
   const user = await User.findOne({ email });
 
+  //if user exists and the password is correct then return following json data
   if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
@@ -19,7 +21,7 @@ const authUser = asyncHandler(async (req, res) => {
       pic: user.pic,
       token: generateToken(user._id),
     });
-  } else {
+  } else { //if user does not exist or if password is incorrect, then throw error
     res.status(401);
     throw new Error("Invalid Email or Password");
   }
@@ -31,13 +33,16 @@ const authUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
 
+  //search for user by email
   const userExists = await User.findOne({ email });
 
+  //throw error if user with that email already exists
   if (userExists) {
     res.status(404);
     throw new Error("User already exists");
   }
 
+  //create user
   const user = await User.create({
     name,
     email,
@@ -45,8 +50,10 @@ const registerUser = asyncHandler(async (req, res) => {
     pic,
   });
 
+  //if user is succesfully created then give 201 response, and return json of everything being passed in except password
   if (user) {
     res.status(201).json({
+      //id comes from the database
       _id: user._id,
       name: user.name,
       email: user.email,
