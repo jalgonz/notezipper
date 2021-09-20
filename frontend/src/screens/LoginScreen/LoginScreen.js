@@ -9,6 +9,8 @@ import MainScreen from "../../components/MainScreen";
 import "./LoginScreen.css";
 
 function LoginScreen({ history }) {
+
+  //useState to store email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -31,25 +33,31 @@ function LoginScreen({ history }) {
   return (
     <MainScreen title="LOGIN">
       <div className="loginContainer">
+        {/* if error then load errorMessage component with a variant value of danger(red). Error is then supplied as a child*/}
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loading />}
         <Form onSubmit={submitHandler}>
+
+          {/* Form group for email address */}
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               type="email"
               value={email}
               placeholder="Enter email"
+              //when changing email set to new value
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
 
+          {/* Form group for password */}
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
               value={password}
               placeholder="Password"
+              //on change sets new password
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>

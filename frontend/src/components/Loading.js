@@ -12,6 +12,7 @@ function Loading({ size = 100 }) {
         height: "100%",
       }}
     >
+      {/* spinner component for loading animation */}
       <Spinner
         style={{
           width: size,
